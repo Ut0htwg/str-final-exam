@@ -10,13 +10,22 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserListComponent implements OnInit {
 
-  users$: Observable<User[]> = this.userService.getAll();
+  userList$: Observable<User[]> = this.userService.userList$;
 
   constructor(
     private userService: UserService,
   ) { }
 
   ngOnInit(): void {
+    this.userService.getAll();
+  }
+
+  onDelete(user: User): void {
+    this.userService.remove(user).subscribe(
+      () => {
+        this.userService.getAll();
+      }
+    );
   }
 
 }
